@@ -790,6 +790,7 @@ class AsyncUrlSeeder:
         host = re.sub(r'^https?://', '', domain).rstrip('/')
 
         schemes = ('https', 'http')  # prefer TLS, downgrade if needed
+        found_sitemap = False
         for scheme in schemes:
             for suffix in ("/sitemap.xml", "/sitemap_index.xml"):
                 sm = f"{scheme}://{host}{suffix}"
@@ -802,7 +803,9 @@ class AsyncUrlSeeder:
                             await fp.write(u + "\n")
                             if _match(u, pattern):
                                 yield u
-                    return
+                    found_sitemap = True
+            if found_sitemap:
+                return
 
         # 2️⃣ robots.txt fallback
         robots = f"https://{domain.rstrip('/')}/robots.txt"
