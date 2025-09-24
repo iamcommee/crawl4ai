@@ -791,7 +791,7 @@ class AsyncUrlSeeder:
 
         schemes = ('https', 'http')  # prefer TLS, downgrade if needed
         for scheme in schemes:
-            for suffix in ("/sitemap_index.xml"):
+            for suffix in ("/sitemap.xml", "/sitemap_index.xml"):
                 sm = f"{scheme}://{host}{suffix}"
                 sm = await self._resolve_head(sm)
                 if sm:
